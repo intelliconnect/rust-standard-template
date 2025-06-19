@@ -4,6 +4,7 @@ use sqlx::postgres::PgPoolOptions;
 use dotenv::dotenv;
 mod model;
 mod controller;
+mod routes;
 
 #[tokio::main]
 async fn main(){
@@ -22,6 +23,7 @@ async fn main(){
     let app = Router::new()
         .route("/", get(|| async{"Success"}))
         .route("/login", post(controller::login::get_authenticate))
+        .nest("/api", routes::routes())
         .layer(cors_layer)
         .layer(Extension(pool));
     
