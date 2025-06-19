@@ -3,7 +3,7 @@ use hyper::Body;
 use serde_json::json;
 use sqlx::PgPool;
 
-use crate::model::login::{LoginReq, Order};
+use crate::model::login::LoginReq;
 
 
 pub async fn get_authenticate(
