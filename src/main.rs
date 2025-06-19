@@ -1,13 +1,31 @@
 use axum::{ extract::Extension, routing::{get, post}, Router};
 use tower_http::cors::CorsLayer;
 use sqlx::postgres::PgPoolOptions;
+use once_cell::sync::Lazy;
 use dotenv::dotenv;
 mod model;
 mod controller;
 mod routes;
+mod middleware;
+
+// Static variables
+static KEYS: Lazy<model::auth_models::Keys> = Lazy::new(|| {
+    let secret = std::env::var("JWT_SECRET").expect("set JWT_SECRET env variable");
+    model::auth_models::Keys::new(secret.as_bytes())
+});
 
 #[tokio::main]
 async fn main(){
+    // sentry initialization 
+    // let _guard = if dev_env == "prod" {
+    //     Some(sentry::init(("https://9f5857017761b7d034501debc36ecaed@o4504557842071552.ingest.sentry.io/4506534054920192", sentry::ClientOptions {
+    //         release: sentry::release_name!(),
+    //         ..Default::default()
+    //     })))
+    // } else {
+    //     None
+    // };
+
     let cors_layer = CorsLayer::permissive();
     
     dotenv().ok();
