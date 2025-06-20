@@ -1,0 +1,1 @@
+-- scripts to add all indexes to the database are to be added here

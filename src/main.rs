@@ -7,6 +7,8 @@ mod model;
 mod controller;
 mod routes;
 mod middleware;
+mod utils;
+mod error;
 
 // Static variables
 static KEYS: Lazy<model::auth_models::Keys> = Lazy::new(|| {

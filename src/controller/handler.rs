@@ -1,3 +1,4 @@
+#![allow(dead_code)]
 // Each handler is supposed to have a comment above it describing its purpose.
 
 // handler to used to fetch example data

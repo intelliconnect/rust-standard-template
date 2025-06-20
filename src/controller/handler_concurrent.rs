@@ -1,3 +1,4 @@
+#![allow(dead_code)]
 use axum::{Extension, Json};
 use serde::Serialize;
 use serde_json::json;
