@@ -6,7 +6,7 @@ To ensure a smooth onboarding experience and consistent development practices, f
 
 **1. Install Rust Toolchain**
 
-- **Rustup**: The official Rust toolchain installer.  
+- **Rustup**: The official Rust toolchain installer.
   Install by running:
   ```sh
   curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh
@@ -42,20 +42,56 @@ Install these extensions by searching for their names in the VS Code Extensions 
 
 ---
 
-**4. Linting and Formatting**
+````markdown
+---
 
-- **Linting**: No additional linting tools are required.  
-  Use [cargo clippy](https://doc.rust-lang.org/clippy/) for linting:
-  ```sh
-  cargo clippy
-  ```
-  This is sufficient for code quality checks; no other linter extensions are necessary[1].
+## 4. Git Hooks Setup and Code Quality Checks
 
-- **Formatting**:  
+### Git Hooks Setup
+
+To enable automated pre-commit checks (including running `cargo clippy`), you need to set up Git hooks:
+
+- The hook scripts are stored in the `git-hooks` folder at the root of the repo.
+- A setup script is provided to configure Git to use these hooks automatically.
+
+### How to run the setup script
+
+**After cloning the repository, run the setup once:**
+
+- **Via PowerShell:**
+
+```powershell
+  .\git-hooks\git_hooks_setup.ps1
+````
+
+* **Or (Windows only) via one-click executable:**
+
+  * Locate and double-click the executable at:
+
+    ```
+    git-hooks\git_hooks_setup.exe
+    ```
+
+### What this setup does
+
+* Configures Git to use the `git-hooks` directory as its hooks folder.
+* All git hooks added henceforth will be tracked by git
+
+---
+
+### Code Formatting
+
+* **Formatting:**
   Use [rustfmt](https://github.com/rust-lang/rustfmt) to format your code:
+
   ```sh
   cargo fmt
   ```
+
+
+```
+```
+
 
 ---
 
