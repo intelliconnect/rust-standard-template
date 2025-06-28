@@ -42,9 +42,6 @@ Install these extensions by searching for their names in the VS Code Extensions 
 
 ---
 
-````markdown
----
-
 ## 4. Git Hooks Setup and Code Quality Checks
 
 ### Git Hooks Setup
@@ -60,9 +57,9 @@ To enable automated pre-commit checks (including running `cargo clippy`), you ne
 
 - **Via PowerShell:**
 
-```powershell
+```sh
   .\git-hooks\git_hooks_setup.ps1
-````
+```
 
 * **Or (Windows only) via one-click executable:**
 
