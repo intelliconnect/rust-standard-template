@@ -1,4 +1,3 @@
-````markdown
 # Git Hooks Setup
 
 This folder contains the shared Git hooks and setup scripts for this repository.
