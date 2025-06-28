@@ -85,11 +85,6 @@ To enable automated pre-commit checks (including running `cargo clippy`), you ne
   cargo fmt
   ```
 
-
-```
-```
-
-
 ---
 
 **5. Quick Start**
