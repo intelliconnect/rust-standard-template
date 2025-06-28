@@ -1,0 +1,31 @@
+#!/bin/sh
+
+# Redirect output to stderr.
+exec 1>&2
+
+# Run Clippy
+echo "Running cargo clippy..."
+if ! cargo clippy -- -D warnings; then
+  echo "Clippy failed. Fix warnings before commit."
+  exit 1
+fi
+
+# Determine what to diff against
+if git rev-parse --verify HEAD >/dev/null 2>&1; then
+  against=HEAD
+else
+  against=$(git hash-object -t tree /dev/null)
+fi
+
+# Disallow non-ASCII filenames unless explicitly allowed
+allownonascii=$(git config --type=bool hooks.allownonascii)
+if [ "$allownonascii" != "true" ] &&
+  test $(git diff --cached --name-only --diff-filter=A -z $against |
+    LC_ALL=C tr -d '[ -~]\0' | wc -c) != 0
+then
+  echo "Non-ASCII filenames are not allowed."
+  exit 1
+fi
+
+# Fail on whitespace errors
+exec git diff-index --check --cached $against --
