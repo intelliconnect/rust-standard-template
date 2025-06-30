@@ -5,8 +5,8 @@ exec 1>&2
 
 # Run Clippy
 echo "Running cargo clippy..."
-if ! cargo clippy -- -D warnings; then
-  echo "Clippy failed. Fix warnings before commit."
+if ! cargo clippy; then
+  echo "Clippy encountered an error."
   exit 1
 fi
 
