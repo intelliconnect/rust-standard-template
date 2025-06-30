@@ -35,13 +35,13 @@ Invoke-ps2exe .\git-hooks\git_hooks_setup.ps1 .\git-hooks\git_hooks_setup.exe
 * Using PowerShell:
 
   ```powershell
-  .\git-hooks\git_hooks_setup.ps1
+  .\git_hooks_setup.ps1
   ```
 
-* Or double-click the executable (Windows only):
+* Or double-click the executable in the project root (Windows only):
 
   ```
-  git-hooks\git_hooks_setup.exe
+  \git_hooks_setup.exe
   ```
 
 2. This will configure Git to use the hooks in the `git-hooks` folder automatically.
