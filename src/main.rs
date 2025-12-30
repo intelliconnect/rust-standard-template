@@ -1,6 +1,7 @@
 use axum::{ extract::Extension, routing::{get, post}, Router};
 use tower_http::cors::CorsLayer;
 use sqlx::postgres::PgPoolOptions;
+use redis::Client;
 use once_cell::sync::Lazy;
 use dotenv::dotenv;
 mod model;
@@ -32,20 +33,24 @@ async fn main(){
     
     dotenv().ok();
     let durl = std::env::var("DATABASE_URL").expect("set DATABASE_URL env variable");
+    let redis_url = std::env::var("REDIS_URL").expect("set REDIS_URL env variable");
 
     let pool = PgPoolOptions::new()
         .max_connections(5)
         .connect(&durl)
         .await;
 
-    let pool = pool.expect("could not connect to database");        
+    let pool = pool.expect("could not connect to database");
+    
+    let redis_client = Client::open(redis_url).expect("could not create redis client");
 
     let app = Router::new()
         .route("/", get(|| async{"Success"}))
         .route("/login", post(controller::login::get_authenticate))
         .nest("/api", routes::routes())
         .layer(cors_layer)
-        .layer(Extension(pool));
+        .layer(Extension(pool))
+        .layer(Extension(redis_client));
     
     let addr: std::net::SocketAddr= std::net::SocketAddr::from(([0,0,0,0],5000));
     axum::Server::bind(&addr)

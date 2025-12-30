@@ -1,23 +1,38 @@
 #!/bin/sh
 
-# Redirect output to stderr.
 exec 1>&2
 
-# Run Clippy
-echo "Running cargo clippy..."
+# Get the repo root so we can find our scripts
+REPO_ROOT=$(git rev-parse --show-toplevel)
+
+# First check -> make sure branch name follows our naming convention
+echo "checking branch name"
+if ! bash "$REPO_ROOT/.scripts/check-branch-name.sh"; then
+  exit 1
+fi
+
+# Second check -> validate commit message format
+echo "checking commit message"
+if ! bash "$REPO_ROOT/.scripts/check-commit-msg.sh" "$1"; then
+  exit 1
+fi
+
+# Run Clippy - catches common rust mistakes
+echo "running cargo clippy"
 if ! cargo clippy; then
   echo "Clippy encountered an error."
   exit 1
 fi
 
-# Determine what to diff against
+# Figure out what to compare against
+# If this is a new repo, use an empty tree
 if git rev-parse --verify HEAD >/dev/null 2>&1; then
   against=HEAD
 else
   against=$(git hash-object -t tree /dev/null)
 fi
 
-# Disallow non-ASCII filenames unless explicitly allowed
+# Dont allow files with weird characters in names
 allownonascii=$(git config --type=bool hooks.allownonascii)
 if [ "$allownonascii" != "true" ] &&
   test $(git diff --cached --name-only --diff-filter=A -z $against |
@@ -27,5 +42,5 @@ then
   exit 1
 fi
 
-# Fail on whitespace errors
+# Make sure we are not adding trailing whitespace or other bad stuff
 exec git diff-index --check --cached $against --
